@@ -56,7 +56,18 @@ void ASCharacter::MoveRight(float value)
 
 void ASCharacter::PrimaryAttack()
 {
+	this->PlayAnimMontage(this->AttackAnim);
 
+	this->GetWorldTimerManager().SetTimer(this->TimerHandle_PrimaryAttack, this, &ASCharacter::PrimaryAttack_TimeElapsed, 0.2f);
+}
+
+void ASCharacter::PrimaryInteract()
+{
+	this->InteractionComp->PrimaryInteract();
+}
+
+void ASCharacter::PrimaryAttack_TimeElapsed()
+{
 	const auto HandLocation = this->GetMesh()->GetSocketLocation("Muzzle_01");
 
 	const FTransform SpawnTM = FTransform(GetControlRotation(), HandLocation);
@@ -64,11 +75,6 @@ void ASCharacter::PrimaryAttack()
 	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 	
 	this->GetWorld()->SpawnActor<AActor>(this->ProjectileClass, SpawnTM, SpawnParams);
-}
-
-void ASCharacter::PrimaryInteract()
-{
-	this->InteractionComp->PrimaryInteract();
 }
 
 // Called every frame
