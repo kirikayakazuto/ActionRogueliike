@@ -39,6 +39,7 @@ void ASExplosiveBarrel::Tick(float DeltaTime)
 void ASExplosiveBarrel::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp,
 	FVector NormalImpulse, const FHitResult& Hit)
 {
+	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::White, TEXT("On Hit"));
 	this->RadialForceComp->FireImpulse();
 }
 
