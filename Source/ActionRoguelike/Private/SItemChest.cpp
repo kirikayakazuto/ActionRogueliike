@@ -27,7 +27,6 @@ void ASItemChest::BeginPlay()
 
 void ASItemChest::Interact_Implementation(APawn* InstigatorPawn)
 {
-	// ISGameplayInterface::Interact_Implementation(InstigatorPawn);
 	this->LidMesh->SetRelativeRotation(FRotator(this->TargetPitch, 0.f, 0.f));
 }
 
