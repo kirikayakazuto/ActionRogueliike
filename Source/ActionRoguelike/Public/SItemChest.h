@@ -8,7 +8,8 @@
 #include "SItemChest.generated.h"
 
 class UStaticMeshComponent;
-
+class UTimelineComponent;
+class UParticleSystemComponent;
 UCLASS()
 class ACTIONROGUELIKE_API ASItemChest : public AActor, public ISGameplayInterface
 {
@@ -22,14 +23,23 @@ public:
 
 protected:
 
+	UPROPERTY(EditAnywhere)
+	UCurveFloat* CurveFloat;
+
 	UPROPERTY(VisibleAnywhere)
 	UStaticMeshComponent* BaseMesh;
 
 	UPROPERTY(VisibleAnywhere)
 	UStaticMeshComponent* LidMesh;
 
-	UPROPERTY(EditAnywhere)
-	float TargetPitch;
+	UPROPERTY(VisibleAnywhere)
+	UStaticMeshComponent* PileMesh;
+
+	UPROPERTY(VisibleAnywhere)
+	UParticleSystemComponent* ParticleSystemComp;
+
+	UPROPERTY(VisibleAnywhere)
+	UTimelineComponent* TimelineComp;
 	
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -37,5 +47,11 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
+	UFUNCTION()
+	void OnTimelineTick(float value);
+
+	UFUNCTION()
+	void OnTimelineEndEvent();
 
 };

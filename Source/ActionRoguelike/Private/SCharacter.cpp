@@ -3,6 +3,7 @@
 
 #include "SCharacter.h"
 
+#include "DrawDebugHelpers.h"
 #include "SInteractionComponent.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -70,11 +71,15 @@ void ASCharacter::PrimaryAttack_TimeElapsed()
 {
 	const auto HandLocation = this->GetMesh()->GetSocketLocation("Muzzle_01");
 
+	auto ActorLocation = this->GetActorLocation();
+
 	const FTransform SpawnTM = FTransform(GetControlRotation(), HandLocation);
 	FActorSpawnParameters SpawnParams;
 	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-	
+
+	SpawnParams.Instigator = this;
 	this->GetWorld()->SpawnActor<AActor>(this->ProjectileClass, SpawnTM, SpawnParams);
+	
 }
 
 // Called every frame

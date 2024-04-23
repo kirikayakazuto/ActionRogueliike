@@ -22,18 +22,25 @@ ASMagicProjectile::ASMagicProjectile()
 	
 	this->EffectComp = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("EffectComp"));
 	this->EffectComp->SetupAttachment(this->RootComponent);
+
+	this->HitParticleComp = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("HitParticleComp"));
+	this->HitParticleComp->SetupAttachment(this->RootComponent);
+	this->HitParticleComp->SetAutoActivate(false);
 	
 	this->MovementComp = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("MovementComp"));
 	this->MovementComp->InitialSpeed = 1000.0f;
 	this->MovementComp->bRotationFollowsVelocity = true;
 	this->MovementComp->bInitialVelocityInLocalSpace = true;
+
+	this->SphereComp->OnComponentHit.AddDynamic(this, &ASMagicProjectile::OnHit);
+	
 }
 
 // Called when the game starts or when spawned
 void ASMagicProjectile::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	this->SphereComp->IgnoreActorWhenMoving(this->GetInstigator(), true);
 }
 
 // Called every frame
@@ -41,5 +48,23 @@ void ASMagicProjectile::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+}
+
+
+
+void ASMagicProjectile::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp,
+	FVector NormalImpulse, const FHitResult& Hit)
+{
+	if(OtherActor == this->GetInstigator()) return;
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, TEXT("call OnHit"));
+	this->HitParticleComp->Activate();
+	// this->HitParticleComp->OnSystemFinished.AddDynamic(this, &ASMagicProjectile::OnDestroy);
+	this->Destroy();
+	
+}
+
+void ASMagicProjectile::OnDestroy(UParticleSystemComponent* PSystem)
+{
+	this->Destroy();
 }
 

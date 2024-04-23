@@ -19,6 +19,8 @@ ASExplosiveBarrel::ASExplosiveBarrel()
 	this->RadialForceComp->ImpulseStrength = 1000.0f;
 	this->RadialForceComp->bImpulseVelChange = true;
 
+	// this->RadialForceComp->SetAutoActivate(false);
+
 	this->StaticMeshComp->OnComponentHit.AddDynamic(this, &ASExplosiveBarrel::OnHit);
 }
 
@@ -41,5 +43,7 @@ void ASExplosiveBarrel::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherAc
 {
 	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::White, TEXT("On Hit"));
 	this->RadialForceComp->FireImpulse();
+
+	UE_LOG(LogTemp, Log, TEXT("Explosive On Hit: %s"), *GetNameSafe(OtherActor))
 }
 
