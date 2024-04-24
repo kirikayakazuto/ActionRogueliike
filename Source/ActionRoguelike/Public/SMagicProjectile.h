@@ -32,6 +32,8 @@ protected:
 
 	UPROPERTY(VisibleAnywhere)
 	UParticleSystemComponent* HitParticleComp;
+
+	FTimerHandle TimerHandle_Destroy;
 	
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -44,5 +46,5 @@ public:
 	void OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
 
 	UFUNCTION()
-	void OnDestroy(UParticleSystemComponent* PSystem);
+	void Destroy_TimeElapsed();
 };

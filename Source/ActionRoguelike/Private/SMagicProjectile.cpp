@@ -28,7 +28,7 @@ ASMagicProjectile::ASMagicProjectile()
 	this->HitParticleComp->SetAutoActivate(false);
 	
 	this->MovementComp = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("MovementComp"));
-	this->MovementComp->InitialSpeed = 1000.0f;
+	this->MovementComp->InitialSpeed = 2000.0f;
 	this->MovementComp->bRotationFollowsVelocity = true;
 	this->MovementComp->bInitialVelocityInLocalSpace = true;
 
@@ -58,12 +58,12 @@ void ASMagicProjectile::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherAc
 	if(OtherActor == this->GetInstigator()) return;
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, TEXT("call OnHit"));
 	this->HitParticleComp->Activate();
-	// this->HitParticleComp->OnSystemFinished.AddDynamic(this, &ASMagicProjectile::OnDestroy);
-	this->Destroy();
+	// this->Destroy();
+	this->GetWorldTimerManager().SetTimer(this->TimerHandle_Destroy, this, &ASMagicProjectile::Destroy_TimeElapsed, 0.3f);
 	
 }
 
-void ASMagicProjectile::OnDestroy(UParticleSystemComponent* PSystem)
+void ASMagicProjectile::Destroy_TimeElapsed()
 {
 	this->Destroy();
 }

@@ -37,6 +37,8 @@ void USInteractionComponent::PrimaryInteract()
 	FRotator EyeRotation;
 
 	Owner->GetActorEyesViewPoint(EyeLocation, EyeRotation);
+
+	
 	
 	FHitResult Hit;
 	const FVector End = EyeLocation + (EyeRotation.Vector() * 500.0f);
